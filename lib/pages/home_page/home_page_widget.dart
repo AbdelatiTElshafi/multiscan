@@ -78,10 +78,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 alignment: AlignmentDirectional(0.0, 1.0),
                 child: Container(
                   width: 400.0,
-                  height: 400.0,
+                  height: 700.0,
                   child: custom_widgets.MultiBarcodeScanner(
                     width: 400.0,
-                    height: 400.0,
+                    height: 700.0,
                   ),
                 ),
               ),

@@ -10,10 +10,12 @@ class Card22DoubleLineWidget extends StatefulWidget {
     super.key,
     required this.serial,
     required this.batch,
+    required this.no,
   });
 
   final String? serial;
   final String? batch;
+  final int? no;
 
   @override
   State<Card22DoubleLineWidget> createState() => _Card22DoubleLineWidgetState();
@@ -68,13 +70,24 @@ class _Card22DoubleLineWidgetState extends State<Card22DoubleLineWidget> {
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Align(
-                alignment: AlignmentDirectional(0.0, 0.0),
-                child: Icon(
-                  Icons.format_list_numbered,
-                  color: FlutterFlowTheme.of(context).secondaryText,
-                  size: 24.0,
+              Text(
+                valueOrDefault<String>(
+                  widget.no?.toString(),
+                  '0',
                 ),
+                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      font: GoogleFonts.inter(
+                        fontWeight:
+                            FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                        fontStyle:
+                            FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                      ),
+                      letterSpacing: 0.0,
+                      fontWeight:
+                          FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                      fontStyle:
+                          FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                    ),
               ),
               Expanded(
                 child: Column(

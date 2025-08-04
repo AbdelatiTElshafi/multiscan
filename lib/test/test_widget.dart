@@ -117,6 +117,7 @@ class _TestWidgetState extends State<TestWidget> {
                                 batch: FFAppState()
                                     .scannedCodes1
                                     .elementAtOrNull(hhIndex)!,
+                                no: hhIndex,
                               ),
                             );
                           },

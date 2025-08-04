@@ -153,6 +153,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         batch: FFAppState()
                                             .scannedCodes1
                                             .elementAtOrNull(hhIndex)!,
+                                        no: hhIndex,
                                       ),
                                     );
                                   },

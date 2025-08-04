@@ -10,13 +10,19 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 
 class MultiBarcodeScanner extends StatefulWidget {
   const MultiBarcodeScanner({
-    Key? key,
+    super.key,
     this.width,
     this.height,
-  }) : super(key: key);
+    this.onSubmit,
+    this.onScanAction,
+  });
 
   final double? width;
   final double? height;
+  final Future<void> Function()? onSubmit;
+
+  /// Action triggered every time a new scan is added
+  final Future<void> Function(List<String> scannedCodes)? onScanAction;
 
   @override
   State<MultiBarcodeScanner> createState() => _MultiBarcodeScannerState();
@@ -24,75 +30,90 @@ class MultiBarcodeScanner extends StatefulWidget {
 
 class _MultiBarcodeScannerState extends State<MultiBarcodeScanner> {
   final MobileScannerController cameraController = MobileScannerController();
-  final Set<String> scannedCodes = {};
+  final List<String> scannedCodes = [];
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: widget.width ?? 300,
-      height: widget.height ?? 300,
+      width: widget.width ?? double.infinity,
+      height: widget.height ?? double.infinity,
       child: Stack(
         children: [
-          // ======== الكاميرا ========
+          /// ✅ الكاميرا
           MobileScanner(
             controller: cameraController,
             onDetect: (capture) {
-              for (final barcode in capture.barcodes) {
-                final code = barcode.rawValue;
-                if (code != null && !scannedCodes.contains(code)) {
+              final barcodes = capture.barcodes;
+              for (final barcode in barcodes) {
+                final code = barcode.rawValue ?? '';
+                if (code.isNotEmpty && !scannedCodes.contains(code)) {
                   setState(() {
                     scannedCodes.add(code);
                   });
-                  debugPrint('Barcode: $code');
+
+                  /// ✅ Call onScanAction
+                  if (widget.onScanAction != null) {
+                    widget.onScanAction!(List.from(scannedCodes));
+                  }
                 }
               }
             },
           ),
 
-          // ======== زر الفلاش في الأعلى يمين ========
+          /// ✅ زرار الفلاش
           Positioned(
-            top: 8,
-            right: 8,
-            child: ValueListenableBuilder<TorchState>(
-              valueListenable: cameraController.torchState,
-              builder: (context, state, child) {
-                return IconButton(
-                  icon: Icon(
-                    state == TorchState.off ? Icons.flash_off : Icons.flash_on,
-                    color:
-                        state == TorchState.off ? Colors.grey : Colors.yellow,
-                  ),
-                  iconSize: 30,
-                  onPressed: () => cameraController.toggleTorch(),
-                );
-              },
+            top: 16,
+            right: 16,
+            child: IconButton(
+              icon: ValueListenableBuilder(
+                valueListenable: cameraController.torchState,
+                builder: (context, state, _) {
+                  return Icon(
+                    state == TorchState.on ? Icons.flash_on : Icons.flash_off,
+                    color: state == TorchState.on ? Colors.yellow : Colors.grey,
+                  );
+                },
+              ),
+              onPressed: () => cameraController.toggleTorch(),
             ),
           ),
 
-          // ======== عداد الأكواد في الأسفل يسار ========
+          /// ✅ عدد الأكواد على الشمال تحت
           Positioned(
-            bottom: 8,
-            left: 8,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.black54,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.qr_code, color: Colors.white, size: 20),
-                  const SizedBox(width: 6),
-                  Text(
-                    '${scannedCodes.length}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+            bottom: 16,
+            left: 16,
+            child: Row(
+              children: [
+                const Icon(Icons.qr_code, color: Colors.white),
+                const SizedBox(width: 6),
+                Text(
+                  '${scannedCodes.length}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
+                ),
+              ],
+            ),
+          ),
+
+          /// ✅ زرار صح على اليمين تحت
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(14),
+                backgroundColor: Colors.green,
               ),
+              onPressed: () async {
+                if (widget.onSubmit != null) {
+                  await widget.onSubmit!();
+                }
+              },
+              child: const Icon(Icons.check, color: Colors.white),
             ),
           ),
         ],

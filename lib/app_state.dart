@@ -20,38 +20,32 @@ class FFAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<String> _test = [
-    'Hello World',
-    'Hello World1',
-    'Hello World2',
-    'Hello World',
-    'Hello World'
-  ];
-  List<String> get test => _test;
-  set test(List<String> value) {
-    _test = value;
+  List<String> _scannedCodes1 = [];
+  List<String> get scannedCodes1 => _scannedCodes1;
+  set scannedCodes1(List<String> value) {
+    _scannedCodes1 = value;
   }
 
-  void addToTest(String value) {
-    test.add(value);
+  void addToScannedCodes1(String value) {
+    scannedCodes1.add(value);
   }
 
-  void removeFromTest(String value) {
-    test.remove(value);
+  void removeFromScannedCodes1(String value) {
+    scannedCodes1.remove(value);
   }
 
-  void removeAtIndexFromTest(int index) {
-    test.removeAt(index);
+  void removeAtIndexFromScannedCodes1(int index) {
+    scannedCodes1.removeAt(index);
   }
 
-  void updateTestAtIndex(
+  void updateScannedCodes1AtIndex(
     int index,
     String Function(String) updateFn,
   ) {
-    test[index] = updateFn(_test[index]);
+    scannedCodes1[index] = updateFn(_scannedCodes1[index]);
   }
 
-  void insertAtIndexInTest(int index, String value) {
-    test.insert(index, value);
+  void insertAtIndexInScannedCodes1(int index, String value) {
+    scannedCodes1.insert(index, value);
   }
 }

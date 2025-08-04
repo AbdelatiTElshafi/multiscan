@@ -1,8 +1,10 @@
+import '/components/card22_double_line_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'home_page_model.dart';
 export 'home_page_model.dart';
 
@@ -36,6 +38,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -43,6 +47,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
+        resizeToAvoidBottomInset: false,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
@@ -78,11 +83,44 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 alignment: AlignmentDirectional(0.0, 1.0),
                 child: Container(
                   width: 400.0,
-                  height: 700.0,
+                  height: 500.0,
                   child: custom_widgets.MultiBarcodeScanner(
                     width: 400.0,
-                    height: 700.0,
+                    height: 500.0,
                   ),
+                ),
+              ),
+              Align(
+                alignment: AlignmentDirectional(0.0, -1.0),
+                child: Builder(
+                  builder: (context) {
+                    final hh = FFAppState().test.toList();
+
+                    return ListView.separated(
+                      padding: EdgeInsets.symmetric(vertical: 0.0),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: hh.length,
+                      separatorBuilder: (_, __) => SizedBox(height: 0.0),
+                      itemBuilder: (context, hhIndex) {
+                        final hhItem = hh[hhIndex];
+                        return wrapWithModel(
+                          model: _model.card22DoubleLineModels.getModel(
+                            FFAppState().test.elementAtOrNull(hhIndex)!,
+                            hhIndex,
+                          ),
+                          updateCallback: () => safeSetState(() {}),
+                          child: Card22DoubleLineWidget(
+                            key: Key(
+                              'Keyqh0_${FFAppState().test.elementAtOrNull(hhIndex)!}',
+                            ),
+                            phonenumber:
+                                FFAppState().test.elementAtOrNull(hhIndex)!,
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
             ],

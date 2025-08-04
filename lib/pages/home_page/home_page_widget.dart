@@ -47,7 +47,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        resizeToAvoidBottomInset: false,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
@@ -77,51 +76,82 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         body: SafeArea(
           top: true,
           child: Column(
-            mainAxisSize: MainAxisSize.max,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Align(
-                alignment: AlignmentDirectional(0.0, 1.0),
-                child: Container(
-                  width: 400.0,
-                  height: 500.0,
-                  child: custom_widgets.MultiBarcodeScanner(
-                    width: 400.0,
-                    height: 500.0,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: AlignmentDirectional(0.0, -1.0),
-                child: Builder(
-                  builder: (context) {
-                    final hh = FFAppState().test.toList();
-
-                    return ListView.separated(
-                      padding: EdgeInsets.symmetric(vertical: 0.0),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: hh.length,
-                      separatorBuilder: (_, __) => SizedBox(height: 0.0),
-                      itemBuilder: (context, hhIndex) {
-                        final hhItem = hh[hhIndex];
-                        return wrapWithModel(
-                          model: _model.card22DoubleLineModels.getModel(
-                            FFAppState().test.elementAtOrNull(hhIndex)!,
-                            hhIndex,
-                          ),
-                          updateCallback: () => safeSetState(() {}),
-                          child: Card22DoubleLineWidget(
-                            key: Key(
-                              'Keyqh0_${FFAppState().test.elementAtOrNull(hhIndex)!}',
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional(0.0, -1.0),
+                    child: SafeArea(
+                      child: Container(
+                        width: double.infinity,
+                        height: 500.0,
+                        decoration: BoxDecoration(
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                        ),
+                        alignment: AlignmentDirectional(0.0, 0.0),
+                        child: Align(
+                          alignment: AlignmentDirectional(0.0, -1.0),
+                          child: Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: custom_widgets.MultiBarcodeScanner(
+                              width: double.infinity,
+                              height: double.infinity,
                             ),
-                            phonenumber:
-                                FFAppState().test.elementAtOrNull(hhIndex)!,
                           ),
-                        );
-                      },
-                    );
-                  },
-                ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SafeArea(
+                    child: Container(
+                      width: 388.0,
+                      height: 216.59,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      alignment: AlignmentDirectional(0.0, 0.0),
+                      child: Align(
+                        alignment: AlignmentDirectional(0.0, -1.0),
+                        child: Builder(
+                          builder: (context) {
+                            final hh = FFAppState().test.toList();
+
+                            return ListView.separated(
+                              padding: EdgeInsets.symmetric(vertical: 0.0),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: hh.length,
+                              separatorBuilder: (_, __) =>
+                                  SizedBox(height: 0.0),
+                              itemBuilder: (context, hhIndex) {
+                                final hhItem = hh[hhIndex];
+                                return wrapWithModel(
+                                  model: _model.card22DoubleLineModels.getModel(
+                                    FFAppState().test.elementAtOrNull(hhIndex)!,
+                                    hhIndex,
+                                  ),
+                                  updateCallback: () => safeSetState(() {}),
+                                  child: Card22DoubleLineWidget(
+                                    key: Key(
+                                      'Keyqh0_${FFAppState().test.elementAtOrNull(hhIndex)!}',
+                                    ),
+                                    phonenumber: FFAppState()
+                                        .test
+                                        .elementAtOrNull(hhIndex)!,
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ].divide(SizedBox(height: 2.0)).around(SizedBox(height: 2.0)),
               ),
             ],
           ),

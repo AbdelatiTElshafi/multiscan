@@ -28,80 +28,75 @@ class _MultiBarcodeScannerState extends State<MultiBarcodeScanner> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // ======== الكاميرا ========
-        SizedBox(
-          width: widget.width ?? 300,
-          height: widget.height ?? 300,
-          child: Stack(
-            children: [
-              MobileScanner(
-                controller: cameraController,
-                onDetect: (capture) {
-                  for (final barcode in capture.barcodes) {
-                    final code = barcode.rawValue;
-                    if (code != null && !scannedCodes.contains(code)) {
-                      scannedCodes.add(code);
-
-                      showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          title: const Text('تم قراءة باركود'),
-                          content: Text(code),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: const Text('تم'),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  }
-                },
-              ),
-              // ======== زرار الفلاش ========
-              Positioned(
-                top: 8,
-                right: 8,
-                child: ValueListenableBuilder<TorchState>(
-                  valueListenable: cameraController.torchState,
-                  builder: (context, state, child) {
-                    return IconButton(
-                      icon: Icon(
-                        state == TorchState.off
-                            ? Icons.flash_off
-                            : Icons.flash_on,
-                        color: state == TorchState.off
-                            ? Colors.grey
-                            : Colors.yellow,
-                      ),
-                      iconSize: 30,
-                      onPressed: () => cameraController.toggleTorch(),
-                    );
-                  },
-                ),
-              ),
-            ],
+    return SizedBox(
+      width: widget.width ?? 300,
+      height: widget.height ?? 300,
+      child: Stack(
+        children: [
+          // ======== الكاميرا ========
+          MobileScanner(
+            controller: cameraController,
+            onDetect: (capture) {
+              for (final barcode in capture.barcodes) {
+                final code = barcode.rawValue;
+                if (code != null && !scannedCodes.contains(code)) {
+                  setState(() {
+                    scannedCodes.add(code);
+                  });
+                  debugPrint('Barcode: $code');
+                }
+              }
+            },
           ),
-        ),
 
-        // ======== عدد الباركودات ========
-        const SizedBox(height: 12),
-        Text(
-          'عدد الباركودات: ${scannedCodes.length}',
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-
-        // ======== عرض الأكواد ========
-        const SizedBox(height: 8),
-        Expanded(
-          child: ListView(
-            children: scannedCodes.map((code) => Text(code)).toList(),
+          // ======== زر الفلاش في الأعلى يمين ========
+          Positioned(
+            top: 8,
+            right: 8,
+            child: ValueListenableBuilder<TorchState>(
+              valueListenable: cameraController.torchState,
+              builder: (context, state, child) {
+                return IconButton(
+                  icon: Icon(
+                    state == TorchState.off ? Icons.flash_off : Icons.flash_on,
+                    color:
+                        state == TorchState.off ? Colors.grey : Colors.yellow,
+                  ),
+                  iconSize: 30,
+                  onPressed: () => cameraController.toggleTorch(),
+                );
+              },
+            ),
           ),
-        ),
-      ],
+
+          // ======== عداد الأكواد في الأسفل يسار ========
+          Positioned(
+            bottom: 8,
+            left: 8,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.black54,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.qr_code, color: Colors.white, size: 20),
+                  const SizedBox(width: 6),
+                  Text(
+                    '${scannedCodes.length}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

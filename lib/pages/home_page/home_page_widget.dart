@@ -81,35 +81,26 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Align(
-                    alignment: AlignmentDirectional(0.0, -1.0),
-                    child: SafeArea(
-                      child: Container(
-                        width: double.infinity,
-                        height: 500.0,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                        ),
-                        alignment: AlignmentDirectional(0.0, 0.0),
-                        child: Align(
-                          alignment: AlignmentDirectional(0.0, -1.0),
-                          child: Container(
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Align(
+                        alignment: AlignmentDirectional(0.0, -1.0),
+                        child: Container(
+                          width: double.infinity,
+                          height: 300.0,
+                          child: custom_widgets.MultiBarcodeScanner(
                             width: double.infinity,
-                            height: double.infinity,
-                            child: custom_widgets.MultiBarcodeScanner(
-                              width: double.infinity,
-                              height: double.infinity,
-                            ),
+                            height: 300.0,
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                   SafeArea(
                     child: Container(
-                      width: 388.0,
-                      height: 216.59,
+                      width: double.infinity,
+                      height: 327.6,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                       ),
